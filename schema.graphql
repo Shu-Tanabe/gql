@@ -4,5 +4,16 @@ type Customer {
 }
 
 type Query {
-  customers: [Customer!]!
+  getCustomers: [Customer]!
+  getCustomerById(customerId: String!): Customer
+}
+
+type Mutation {
+  addCustomer(customerId: String, input: CustomerInput): Customer
+  updateCustomer(customerId: String, input: CustomerInput): Customer
+  deleteCustomer(customerId: String): Customer
+}
+
+input CustomerInput {
+  customerName: String!
 }

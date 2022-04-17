@@ -10,6 +10,9 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -25,9 +28,39 @@ export type Customer = {
   customerName?: Maybe<Scalars["String"]>;
 };
 
+export type CustomerInput = {
+  customerName: Scalars["String"];
+};
+
+export type Mutation = {
+  __typename?: "Mutation";
+  addCustomer?: Maybe<Customer>;
+  deleteCustomer?: Maybe<Customer>;
+  updateCustomer?: Maybe<Customer>;
+};
+
+export type MutationAddCustomerArgs = {
+  customerId?: InputMaybe<Scalars["String"]>;
+  input?: InputMaybe<CustomerInput>;
+};
+
+export type MutationDeleteCustomerArgs = {
+  customerId?: InputMaybe<Scalars["String"]>;
+};
+
+export type MutationUpdateCustomerArgs = {
+  customerId?: InputMaybe<Scalars["String"]>;
+  input?: InputMaybe<CustomerInput>;
+};
+
 export type Query = {
   __typename?: "Query";
-  customers: Array<Customer>;
+  getCustomerById?: Maybe<Customer>;
+  getCustomers: Array<Maybe<Customer>>;
+};
+
+export type QueryGetCustomerByIdArgs = {
+  customerId: Scalars["String"];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -142,6 +175,8 @@ export type DirectiveResolverFn<
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   Customer: ResolverTypeWrapper<Customer>;
+  CustomerInput: CustomerInput;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars["String"]>;
 }>;
@@ -150,6 +185,8 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars["Boolean"];
   Customer: Customer;
+  CustomerInput: CustomerInput;
+  Mutation: {};
   Query: {};
   String: Scalars["String"];
 }>;
@@ -171,12 +208,42 @@ export type CustomerResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MutationResolvers<
+  ContextType = "../context",
+  ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
+> = ResolversObject<{
+  addCustomer?: Resolver<
+    Maybe<ResolversTypes["Customer"]>,
+    ParentType,
+    ContextType,
+    Partial<MutationAddCustomerArgs>
+  >;
+  deleteCustomer?: Resolver<
+    Maybe<ResolversTypes["Customer"]>,
+    ParentType,
+    ContextType,
+    Partial<MutationDeleteCustomerArgs>
+  >;
+  updateCustomer?: Resolver<
+    Maybe<ResolversTypes["Customer"]>,
+    ParentType,
+    ContextType,
+    Partial<MutationUpdateCustomerArgs>
+  >;
+}>;
+
 export type QueryResolvers<
   ContextType = "../context",
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"]
 > = ResolversObject<{
-  customers?: Resolver<
-    Array<ResolversTypes["Customer"]>,
+  getCustomerById?: Resolver<
+    Maybe<ResolversTypes["Customer"]>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryGetCustomerByIdArgs, "customerId">
+  >;
+  getCustomers?: Resolver<
+    Array<Maybe<ResolversTypes["Customer"]>>,
     ParentType,
     ContextType
   >;
@@ -184,5 +251,6 @@ export type QueryResolvers<
 
 export type Resolvers<ContextType = "../context"> = ResolversObject<{
   Customer?: CustomerResolvers<ContextType>;
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
 }>;
