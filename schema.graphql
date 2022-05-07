@@ -1,19 +1,51 @@
-type Customer {
-  customerId: String
-  customerName: String
+type Restaurant {
+  restaurantId: ID!
+  restaurantName: String!
+  score: Float
+  introducer: String
+  description: String
+  updatedDate: Date
 }
 
 type Query {
-  getCustomers: [Customer]!
-  getCustomerById(customerId: String!): Customer
+  getRestaurants: [Restaurant]!
+  getRestaurantById(restaurantId: String!): Restaurant
 }
 
 type Mutation {
-  addCustomer(customerId: String, input: CustomerInput): Customer
-  updateCustomer(customerId: String, input: CustomerInput): Customer
-  deleteCustomer(customerId: String): Customer
+  addRestaurant(restaurantInput: AddRestaurantInput): Restaurant
+  updateRestaurant(
+    restaurantId: String!
+    restaurantUpdate: UpdateRestaurantInput
+  ): Restaurant
+  deleteRestaurant(restaurantId: String!): Status!
 }
 
-input CustomerInput {
-  customerName: String!
+enum Status {
+  OK
+  CREATED
+  NO_CONTENT
+  BAD_REQUEST
+  UNAUTHORIZED
+  FORBIDDEN
+  NOT_FOUND
+  INTERNAL_SERVER_ERROR
+  BAD_GATEWAY
+  SURVICE_UNAVAILABLE
+  GATEWAY_TIMEOUT
 }
+
+input AddRestaurantInput {
+  restaurantName: String!
+  score: Float
+  introducer: String
+  description: String
+}
+
+input UpdateRestaurantInput {
+  restaurantName: String!
+  score: Float
+  description: String
+}
+
+scalar Date

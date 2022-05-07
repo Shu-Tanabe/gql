@@ -5,7 +5,8 @@ generates:
     config:
       useIndexSignature: true
       # リゾルバーのためのContextの型をsrc/types/context.d.tsから読み込む
-      contextType: ../context
+      contextType: "../context"
+      enumsAsTypes: true
     plugins:
       - typescript
       - typescript-resolvers

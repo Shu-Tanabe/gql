@@ -1,1 +1,3 @@
-export { addCustomer } from "./addCustomer";
+// export { addCustomer } from "./addCustomer";
+// export { updateCustomer } from "./updateCustomer";
+export { addRestaurant } from "./addRestaurant";

@@ -2,11 +2,11 @@ import { MutationResolvers } from "../../types/generated/graphql";
 import { v4 as uuidv4 } from "uuid";
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 
-// const ddb = new DynamoDBClient({
-//   endpoint: "http://localhost:8000",
-// });
+const ddb = new DynamoDBClient({
+  endpoint: "http://localhost:8000",
+});
 
-const ddb = new DynamoDBClient({});
+// const ddb = new DynamoDBClient({});
 
 type SendItemType = {
   customerId: { S: string };
