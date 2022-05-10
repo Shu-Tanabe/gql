@@ -1,4 +1,4 @@
-import { MutationResolvers } from "../../types/generated/graphql";
+import { QueryResolvers } from "../../types/generated/graphql";
 
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { RestaurantDynamoType } from "../../types/models/restaurantModels";
@@ -36,7 +36,7 @@ const convertRestaurant = (
   return rest;
 };
 
-export const getRestaurants: MutationResolvers["getRestaurants"] = async (
+export const getRestaurants: QueryResolvers["getRestaurants"] = async (
   parent,
   args,
   context,
