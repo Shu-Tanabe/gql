@@ -8,7 +8,7 @@ type Restaurant {
 }
 
 type Query {
-  getRestaurants: [Restaurant]!
+  getRestaurants: [Restaurant]
   getRestaurantById(restaurantId: String!): Restaurant
 }
 
