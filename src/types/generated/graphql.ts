@@ -30,6 +30,7 @@ export type Scalars = {
 export type AddRestaurantInput = {
   description?: InputMaybe<Scalars["String"]>;
   introducer?: InputMaybe<Scalars["String"]>;
+  occasion: Scalars["String"];
   restaurantName: Scalars["String"];
   score?: InputMaybe<Scalars["Float"]>;
 };
@@ -68,6 +69,7 @@ export type Restaurant = {
   __typename?: "Restaurant";
   description?: Maybe<Scalars["String"]>;
   introducer?: Maybe<Scalars["String"]>;
+  occasion: Scalars["String"];
   restaurantId: Scalars["ID"];
   restaurantName: Scalars["String"];
   score?: Maybe<Scalars["Float"]>;
@@ -89,6 +91,7 @@ export type Status =
 
 export type UpdateRestaurantInput = {
   description?: InputMaybe<Scalars["String"]>;
+  occasion?: InputMaybe<Scalars["String"]>;
   restaurantName: Scalars["String"];
   score?: InputMaybe<Scalars["Float"]>;
 };
@@ -290,6 +293,7 @@ export type RestaurantResolvers<
     ParentType,
     ContextType
   >;
+  occasion?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   restaurantId?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   restaurantName?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   score?: Resolver<Maybe<ResolversTypes["Float"]>, ParentType, ContextType>;

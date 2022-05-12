@@ -1,9 +1,9 @@
 aws dynamodb create-table \
 --table-name Restaurant \
 --attribute-definitions \
+AttributeName=Occasion,AttributeType=S \
 AttributeName=RestaurantId,AttributeType=S \
-AttributeName=UpdatedDate,AttributeType=S \
---key-schema AttributeName=RestaurantId,KeyType=HASH AttributeName=UpdatedDate,KeyType=RANGE \
+--key-schema AttributeName=Occasion,KeyType=HASH AttributeName=RestaurantId,KeyType=RANGE \
 --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
 --endpoint-url http://localhost:8000
 

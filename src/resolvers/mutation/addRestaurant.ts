@@ -58,6 +58,7 @@ export const addRestaurant: MutationResolvers["addRestaurant"] = async (
         Introducer: { S: args.restaurantInput.introducer },
         Description: { S: args.restaurantInput.description },
         UpdatedDate: { S: addedDatetime.toString() },
+        Occasion: { S: args.restaurantInput.occasion },
       };
       console.log(covertedCustomer);
       const restaurant = await putRestaurant(covertedCustomer);
@@ -75,4 +76,5 @@ const dummyRestaurant: Restaurant = {
   updatedDate: new Date("2022-12-12"),
   introducer: "test",
   description: "test",
+  occasion: "Dating",
 };

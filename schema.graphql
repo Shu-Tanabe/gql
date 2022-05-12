@@ -5,6 +5,7 @@ type Restaurant {
   introducer: String
   description: String
   updatedDate: Date
+  occasion: String!
 }
 
 type Query {
@@ -40,12 +41,14 @@ input AddRestaurantInput {
   score: Float
   introducer: String
   description: String
+  occasion: String!
 }
 
 input UpdateRestaurantInput {
   restaurantName: String!
   score: Float
   description: String
+  occasion: String
 }
 
 scalar Date

@@ -31,6 +31,7 @@ const convertRestaurant = (
     description: dynamoRestaurant.Description.S,
     updatedDate: dynamoRestaurant.UpdatedDate.S,
     introducer: dynamoRestaurant.Introducer.S,
+    occasion: dynamoRestaurant.Occasion.S,
   };
 
   return rest;
