@@ -60,7 +60,6 @@ export const addRestaurant: MutationResolvers["addRestaurant"] = async (
         UpdatedDate: { S: addedDatetime.toString() },
         Occasion: { S: args.restaurantInput.occasion },
       };
-      console.log(covertedCustomer);
       const restaurant = await putRestaurant(covertedCustomer);
       return dummyRestaurant;
     } catch (err) {
