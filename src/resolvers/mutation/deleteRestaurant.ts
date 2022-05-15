@@ -1,10 +1,6 @@
 import { MutationResolvers, Status } from "../../types/generated/graphql";
 
 import { DynamoDBClient, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
-import {
-  Restaurant,
-  RestaurantDynamoType,
-} from "../../types/models/restaurantModels";
 
 const ddb = new DynamoDBClient({
   endpoint: "http://localhost:8000",

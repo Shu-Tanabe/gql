@@ -90,10 +90,10 @@ export type Status =
   | "UNAUTHORIZED";
 
 export type UpdateRestaurantInput = {
-  description?: InputMaybe<Scalars["String"]>;
+  description: Scalars["String"];
   occasion?: InputMaybe<Scalars["String"]>;
   restaurantName: Scalars["String"];
-  score?: InputMaybe<Scalars["Float"]>;
+  score: Scalars["Float"];
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;

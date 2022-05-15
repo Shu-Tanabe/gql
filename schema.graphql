@@ -46,8 +46,8 @@ input AddRestaurantInput {
 
 input UpdateRestaurantInput {
   restaurantName: String!
-  score: Float
-  description: String
+  score: Float!
+  description: String!
   occasion: String
 }
 
