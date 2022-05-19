@@ -3,7 +3,7 @@ export type Restaurant = {
   restaurantName: string;
   score: number;
   introducer: string;
-  description: string;
+  description?: string;
   updatedDate: Date;
   occasion: "Dating" | "Alone" | "Friends" | "colleague";
 };

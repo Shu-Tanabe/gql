@@ -1,4 +1,8 @@
-import { MutationResolvers } from "../../types/generated/graphql";
+import {
+  MutationResolvers,
+  MutationAddRestaurantArgs,
+  AddRestaurantInput,
+} from "../../types/generated/graphql";
 import { v4 as uuidv4 } from "uuid";
 import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import {
@@ -31,40 +35,28 @@ export const addRestaurant: MutationResolvers["addRestaurant"] = async (
   context,
   info
 ) => {
-  if (args.restaurantInput === undefined || args.restaurantInput === null) {
-    throw new Error();
-  } else {
+  try {
+    let restaurantId = uuidv4();
+    const addedDatetime = new Date();
     if (
-      args.restaurantInput.score === undefined ||
-      args.restaurantInput.score === null ||
-      args.restaurantInput.introducer === undefined ||
-      args.restaurantInput.introducer === null
+      args.restaurantInput.description === null ||
+      args.restaurantInput.description === undefined
     ) {
-      throw new Error();
+      args.restaurantInput.description = "";
     }
-    try {
-      let restaurantId = uuidv4();
-      const addedDatetime = new Date();
-      if (
-        args.restaurantInput.description === null ||
-        args.restaurantInput.description === undefined
-      ) {
-        args.restaurantInput.description = "";
-      }
-      const covertedCustomer: RestaurantDynamoType = {
-        RestaurantId: { S: restaurantId },
-        RestaurantName: { S: args.restaurantInput.restaurantName },
-        Score: { N: args.restaurantInput.score.toString() },
-        Introducer: { S: args.restaurantInput.introducer },
-        Description: { S: args.restaurantInput.description },
-        UpdatedDate: { S: addedDatetime.toString() },
-        Occasion: { S: args.restaurantInput.occasion },
-      };
-      const restaurant = await putRestaurant(covertedCustomer);
-      return dummyRestaurant;
-    } catch (err) {
-      throw new Error();
-    }
+    const covertedCustomer: RestaurantDynamoType = {
+      RestaurantId: { S: restaurantId },
+      RestaurantName: { S: args.restaurantInput.restaurantName },
+      Score: { N: args.restaurantInput.score.toString() },
+      Introducer: { S: args.restaurantInput.introducer },
+      Description: { S: args.restaurantInput.description },
+      UpdatedDate: { S: addedDatetime.toString() },
+      Occasion: { S: args.restaurantInput.occasion },
+    };
+    const restaurant = await putRestaurant(covertedCustomer);
+    return dummyRestaurant;
+  } catch (err) {
+    throw new Error();
   }
 };
 

@@ -29,10 +29,10 @@ export type Scalars = {
 
 export type AddRestaurantInput = {
   description?: InputMaybe<Scalars["String"]>;
-  introducer?: InputMaybe<Scalars["String"]>;
+  introducer: Scalars["String"];
   occasion: Scalars["String"];
   restaurantName: Scalars["String"];
-  score?: InputMaybe<Scalars["Float"]>;
+  score: Scalars["Float"];
 };
 
 export type Mutation = {

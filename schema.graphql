@@ -38,12 +38,11 @@ enum Status {
 
 input AddRestaurantInput {
   restaurantName: String!
-  score: Float
-  introducer: String
+  score: Float!
+  introducer: String!
   description: String
   occasion: String!
 }
-
 input UpdateRestaurantInput {
   restaurantName: String!
   score: Float!
