@@ -39,10 +39,10 @@ const updateItem = async (id: string, restaurant: UpdatableRestaurant) => {
         UpdateExpression:
           // "SET #rName = :restaurantName, #sco = :score, #desc = :description, #updateDt = :updateDate",
           "SET #rName = :restaurantName, #sco = :score, #desc = :description",
-        ConditionExpression: `attribute_exists(${id})`,
+        // "SET #rName = :restaurantName",
+        // ConditionExpression: `attribute_exists(${id})`,
       })
     );
-    console.log(data);
 
     return data;
   } catch (err) {
