@@ -37,9 +37,9 @@ export type AddRestaurantInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  addRestaurant?: Maybe<Restaurant>;
+  addRestaurant: Restaurant;
   deleteRestaurant: Status;
-  updateRestaurant?: Maybe<Restaurant>;
+  updateRestaurant: Restaurant;
 };
 
 export type MutationAddRestaurantArgs = {
@@ -243,7 +243,7 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"]
 > = ResolversObject<{
   addRestaurant?: Resolver<
-    Maybe<ResolversTypes["Restaurant"]>,
+    ResolversTypes["Restaurant"],
     ParentType,
     ContextType,
     Partial<MutationAddRestaurantArgs>
@@ -255,7 +255,7 @@ export type MutationResolvers<
     RequireFields<MutationDeleteRestaurantArgs, "restaurantId">
   >;
   updateRestaurant?: Resolver<
-    Maybe<ResolversTypes["Restaurant"]>,
+    ResolversTypes["Restaurant"],
     ParentType,
     ContextType,
     RequireFields<MutationUpdateRestaurantArgs, "restaurantId">

@@ -14,11 +14,11 @@ type Query {
 }
 
 type Mutation {
-  addRestaurant(restaurantInput: AddRestaurantInput): Restaurant
+  addRestaurant(restaurantInput: AddRestaurantInput): Restaurant!
   updateRestaurant(
     restaurantId: String!
     restaurantUpdate: UpdateRestaurantInput
-  ): Restaurant
+  ): Restaurant!
   deleteRestaurant(restaurantId: String!): Status!
 }
 
