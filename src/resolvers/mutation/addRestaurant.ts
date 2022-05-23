@@ -37,6 +37,8 @@ const addRestaurantSchema: JSONSchemaType<AddRestaurantInput> = {
     },
     description: {
       type: "string",
+      pattern: "^[ぁ-んァ-ヶーｱ-ﾝﾞﾟ一-龠０-９0-9a-zA-Zａ-ｚＡ-Ｚ-]*$",
+      maximum: 500,
       nullable: true,
     },
   },
