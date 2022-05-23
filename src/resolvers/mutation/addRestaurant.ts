@@ -1,10 +1,13 @@
 import {
   MutationResolvers,
-  MutationAddRestaurantArgs,
   AddRestaurantInput,
 } from "../../types/generated/graphql";
 import { v4 as uuidv4 } from "uuid";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import {
+  DynamoDBClient,
+  PutItemCommand,
+  GetItemCommand,
+} from "@aws-sdk/client-dynamodb";
 import {
   Restaurant,
   RestaurantDynamoType,
@@ -19,7 +22,7 @@ const addRestaurantSchema: JSONSchemaType<AddRestaurantInput> = {
   properties: {
     restaurantName: {
       type: "string",
-      pattern: "^[ぁ-んァ-ヶｱ-ﾝﾞﾟ一-龠0-9a-zA-Z]*$",
+      pattern: "^[ぁ-んァ-ヶーｱ-ﾝﾞﾟ一-龠０-９0-9a-zA-Zａ-ｚＡ-Ｚ-]*$",
       maximum: 32,
       minimum: 1,
     },
@@ -45,15 +48,18 @@ const ddb = new DynamoDBClient({
   endpoint: "http://localhost:8000",
 });
 
-const putRestaurant = async (restaurant: RestaurantDynamoType) => {
+const putRestaurant = async (
+  restaurant: RestaurantDynamoType
+): Promise<any> => {
   try {
-    const data = await ddb.send(
+    const restaurantPutItem = await ddb.send(
       new PutItemCommand({
         TableName: "Restaurant",
         Item: restaurant,
       })
     );
-    return data;
+
+    return restaurantPutItem;
   } catch (err) {
     console.error(err);
     return err;
@@ -101,7 +107,6 @@ export const addRestaurant: Required<
   MutationResolvers["addRestaurant"]
 > = async (parent, args, context, info) => {
   const valid = validateRestaurant(args.restaurantInput);
-  console.log(valid);
   if (!valid) {
     console.log(valid);
   } else {
@@ -125,6 +130,18 @@ export const addRestaurant: Required<
         Occasion: { S: restaurantData.occasion },
       };
       const restaurant = await putRestaurant(covertedCustomer);
+
+      const getRestaurantItem = await ddb.send(
+        new GetItemCommand({
+          TableName: "Restaurant",
+          Key: {
+            RestaurantId: { S: restaurantId },
+            Occasion: { S: "Dating" },
+          },
+        })
+      );
+
+      console.log(getRestaurantItem.Item);
       return dummyRestaurant;
     } catch (err) {
       throw new Error();
