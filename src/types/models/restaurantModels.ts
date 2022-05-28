@@ -5,7 +5,7 @@ export type Restaurant = {
   introducer: string;
   description?: string;
   updatedDate: Date;
-  occasion: "Dating" | "Alone" | "Friends" | "colleague";
+  occasion: "Dating" | "Alone" | "Friends" | "Colleague";
 };
 
 export type RestaurantDynamoType = {

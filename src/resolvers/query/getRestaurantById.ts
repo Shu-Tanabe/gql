@@ -8,7 +8,7 @@ const ddb = new DynamoDBClient({
   endpoint: "http://localhost:8000",
 });
 
-const queryRestaurant = async (id: string) => {
+export const queryRestaurant = async (id: string): Promise<any> => {
   try {
     const data: any = await ddb.send(
       new GetItemCommand({

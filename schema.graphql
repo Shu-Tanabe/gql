@@ -36,18 +36,25 @@ enum Status {
   GATEWAY_TIMEOUT
 }
 
+enum Occusion {
+  Dating
+  Alone
+  Friends
+  Colleague
+}
+
 input AddRestaurantInput {
   restaurantName: String!
   score: Float!
   introducer: String!
   description: String
-  occasion: String!
+  occasion: Occusion!
 }
 input UpdateRestaurantInput {
   restaurantName: String!
   score: Float!
   description: String!
-  occasion: String
+  occasion: Occusion
 }
 
 scalar Date

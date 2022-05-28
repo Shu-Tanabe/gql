@@ -13,6 +13,7 @@ import {
   RestaurantDynamoType,
 } from "../../types/models/restaurantModels";
 import Ajv, { JSONSchemaType } from "ajv";
+import { queryRestaurant } from "../query/getRestaurantById";
 
 const ajv = new Ajv();
 
@@ -28,12 +29,15 @@ const addRestaurantSchema: JSONSchemaType<AddRestaurantInput> = {
     },
     score: {
       type: "number",
+      maximum: 20,
     },
     introducer: {
       type: "string",
+      maximum: 20,
     },
     occasion: {
       type: "string",
+      maximum: 20,
     },
     description: {
       type: "string",
@@ -60,7 +64,6 @@ const putRestaurant = async (
         Item: restaurant,
       })
     );
-
     return restaurantPutItem;
   } catch (err) {
     console.error(err);
@@ -122,7 +125,7 @@ export const addRestaurant: Required<
         ? restaurantData.description
         : "";
 
-      const covertedCustomer: RestaurantDynamoType = {
+      const covertedRestaurant: RestaurantDynamoType = {
         RestaurantId: { S: restaurantId },
         RestaurantName: { S: restaurantData.restaurantName },
         Score: { N: restaurantData.score.toString() },
@@ -131,20 +134,18 @@ export const addRestaurant: Required<
         UpdatedDate: { S: addedDatetime.toString() },
         Occasion: { S: restaurantData.occasion },
       };
-      const restaurant = await putRestaurant(covertedCustomer);
+      const restaurant = await putRestaurant(covertedRestaurant);
+      const returnRestaurant: Restaurant = {
+        restaurantId: restaurantId,
+        restaurantName: restaurantData.restaurantName,
+        score: restaurantData.score,
+        description: restaurantData.description ?? "",
+        introducer: restaurantData.introducer,
+        occasion: restaurantData.occasion,
+        updatedDate: addedDatetime,
+      };
 
-      const getRestaurantItem = await ddb.send(
-        new GetItemCommand({
-          TableName: "Restaurant",
-          Key: {
-            RestaurantId: { S: restaurantId },
-            Occasion: { S: "Dating" },
-          },
-        })
-      );
-
-      console.log(getRestaurantItem.Item);
-      return dummyRestaurant;
+      return returnRestaurant;
     } catch (err) {
       throw new Error();
     }
