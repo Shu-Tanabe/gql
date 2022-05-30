@@ -1,4 +1,4 @@
-export type Restaurant = {
+export type TRestaurant = {
   restaurantId: string;
   restaurantName: string;
   score: number;
@@ -8,7 +8,7 @@ export type Restaurant = {
   occasion: "Dating" | "Alone" | "Friends" | "Colleague";
 };
 
-export type RestaurantDynamoType = {
+export type TRestaurantDynamo = {
   RestaurantId: { S: string };
   RestaurantName: { S: string };
   Score: { N: string };

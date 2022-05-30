@@ -1,7 +1,7 @@
 import { QueryResolvers } from "../../types/generated/graphql";
 
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
-import { RestaurantDynamoType } from "../../types/models/restaurantModels";
+import { TRestaurantDynamo } from "../../types/models/restaurantModels";
 import { Restaurant } from "../../types/generated/graphql";
 
 const ddb = new DynamoDBClient({
@@ -21,9 +21,7 @@ const scanRestaurants = async () => {
   }
 };
 
-const convertRestaurant = (
-  dynamoRestaurant: RestaurantDynamoType
-): Restaurant => {
+const convertRestaurant = (dynamoRestaurant: TRestaurantDynamo): Restaurant => {
   const rest: Restaurant = {
     restaurantId: dynamoRestaurant.RestaurantId.S,
     restaurantName: dynamoRestaurant.RestaurantName.S,
@@ -43,7 +41,7 @@ export const getRestaurants: QueryResolvers["getRestaurants"] = async (
   context,
   info
 ) => {
-  const res: RestaurantDynamoType[] = await scanRestaurants();
+  const res: TRestaurantDynamo[] = await scanRestaurants();
   let gotRestaurants: Restaurant[] = [];
   for (let i = 0; i < res.length; i++) {
     const converted = convertRestaurant(res[i]);

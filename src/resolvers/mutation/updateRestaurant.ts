@@ -1,13 +1,13 @@
 import { MutationResolvers } from "../../types/generated/graphql";
 
 import {
-  Restaurant,
-  RestaurantDynamoType,
+  TRestaurant,
+  TRestaurantDynamo,
 } from "../../types/models/restaurantModels";
 import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 
 type UpdatableRestaurant = Omit<
-  Restaurant,
+  TRestaurant,
   "restaurantId" | "introducer" | "occasion" | "updatedDate"
 >;
 
@@ -59,7 +59,7 @@ export const updateRestaurant: MutationResolvers["updateRestaurant"] = async (
 ) => {
   const data: any = await updateItem(args.restaurantId, args.restaurantUpdate);
 
-  const convertedRestaurant: Restaurant = {
+  const convertedRestaurant: TRestaurant = {
     restaurantId: args.restaurantId,
     restaurantName: data.restaurantName,
     score: data.score,
@@ -72,7 +72,7 @@ export const updateRestaurant: MutationResolvers["updateRestaurant"] = async (
   return dummyRestaurant;
 };
 
-const dummyRestaurant: Restaurant = {
+const dummyRestaurant: TRestaurant = {
   restaurantId: "test",
   restaurantName: "test",
   score: 1,

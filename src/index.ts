@@ -9,17 +9,6 @@ const schema = loadSchemaSync(join(__dirname, "../schema.graphql"), {
   loaders: [new GraphQLFileLoader()],
 });
 
-const customers = [
-  {
-    customerId: "vujnswbirbhvjwsd",
-    customerName: "Kate Chopin",
-  },
-  {
-    customerId: "ndskbjrfjwhkds",
-    customerName: "Paul Auster",
-  },
-];
-
 const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
 const server = new ApolloServer({
   schema: schemaWithResolvers,

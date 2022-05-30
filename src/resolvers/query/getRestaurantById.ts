@@ -1,7 +1,7 @@
 import { QueryResolvers } from "../../types/generated/graphql";
 
 import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
-import { RestaurantDynamoType } from "../../types/models/restaurantModels";
+import { TRestaurantDynamo } from "../../types/models/restaurantModels";
 import { Restaurant } from "../../types/generated/graphql";
 
 const ddb = new DynamoDBClient({
@@ -34,7 +34,7 @@ export const getRestaurantById: QueryResolvers["getRestaurantById"] = async (
   context,
   info
 ) => {
-  const restaurant: RestaurantDynamoType = await queryRestaurant(
+  const restaurant: TRestaurantDynamo = await queryRestaurant(
     args.restaurantId
   );
   const convertedRestaurant: Restaurant = {
