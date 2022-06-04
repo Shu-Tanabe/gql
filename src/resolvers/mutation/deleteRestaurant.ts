@@ -1,27 +1,5 @@
 import { MutationResolvers, Status } from "../../types/generated/graphql";
-
-import { DynamoDBClient, DeleteItemCommand } from "@aws-sdk/client-dynamodb";
-
-const ddb = new DynamoDBClient({
-  endpoint: "http://localhost:8000",
-});
-
-const removeRestaurant = async (id: string) => {
-  try {
-    const data = await ddb.send(
-      new DeleteItemCommand({
-        TableName: "Restaurant",
-        Key: {
-          RestaurantId: { S: id },
-          Occasion: { S: "Dating" },
-        },
-      })
-    );
-    return data;
-  } catch (err) {
-    throw new Error(err);
-  }
-};
+import { deleteRestaurantRepos } from "../../repositories/deleteRestaurant";
 
 export const deleteRestaurant: MutationResolvers["deleteRestaurant"] = async (
   parent,
@@ -32,10 +10,14 @@ export const deleteRestaurant: MutationResolvers["deleteRestaurant"] = async (
   if (args.restaurantId === null || args.restaurantId === undefined) {
     throw new Error();
   }
+  try {
+    await deleteRestaurantRepos(args.restaurantId);
 
-  const data: any = removeRestaurant(args.restaurantId);
+    const responseStatus: Status = "OK";
 
-  const responseStatus: Status = "OK";
-
-  return responseStatus;
+    return responseStatus;
+  } catch (err) {
+    console.log(err);
+    throw new Error(err);
+  }
 };

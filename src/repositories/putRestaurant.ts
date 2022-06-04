@@ -5,7 +5,7 @@ const ddb = new DynamoDBClient({
   endpoint: "http://localhost:8000",
 });
 
-export const putRestaurant = async (
+export const putRestaurantRepos = async (
   restaurant: TRestaurantDynamo
 ): Promise<any> => {
   try {

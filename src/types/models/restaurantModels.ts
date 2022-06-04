@@ -8,6 +8,11 @@ export type TRestaurant = {
   occasion: "Dating" | "Alone" | "Friends" | "Colleague";
 };
 
+export type TUpdatableRestaurant = Omit<
+  TRestaurant,
+  "restaurantId" | "introducer" | "occasion" | "updatedDate"
+>;
+
 export type TRestaurantDynamo = {
   RestaurantId: { S: string };
   RestaurantName: { S: string };

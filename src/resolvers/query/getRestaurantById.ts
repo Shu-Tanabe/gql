@@ -1,32 +1,7 @@
 import { QueryResolvers } from "../../types/generated/graphql";
-
-import { DynamoDBClient, GetItemCommand } from "@aws-sdk/client-dynamodb";
 import { TRestaurantDynamo } from "../../types/models/restaurantModels";
 import { Restaurant } from "../../types/generated/graphql";
-
-const ddb = new DynamoDBClient({
-  endpoint: "http://localhost:8000",
-});
-
-export const queryRestaurant = async (id: string): Promise<any> => {
-  try {
-    const data: any = await ddb.send(
-      new GetItemCommand({
-        TableName: "Restaurant",
-        Key: {
-          RestaurantId: { S: id },
-          Occasion: { S: "Dating" },
-        },
-      })
-    );
-    console.log(data);
-
-    return data.Item;
-  } catch (err) {
-    console.log(err);
-    throw new Error(err);
-  }
-};
+import { queryRestaurantById } from "../../repositories/queryRestaurantById";
 
 export const getRestaurantById: QueryResolvers["getRestaurantById"] = async (
   parent,
@@ -34,7 +9,7 @@ export const getRestaurantById: QueryResolvers["getRestaurantById"] = async (
   context,
   info
 ) => {
-  const restaurant: TRestaurantDynamo = await queryRestaurant(
+  const restaurant: TRestaurantDynamo = await queryRestaurantById(
     args.restaurantId
   );
   const convertedRestaurant: Restaurant = {

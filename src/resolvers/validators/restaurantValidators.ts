@@ -1,8 +1,5 @@
 import Ajv, { JSONSchemaType } from "ajv";
-import {
-  MutationResolvers,
-  AddRestaurantInput,
-} from "../../types/generated/graphql";
+import { AddRestaurantInput } from "../../types/generated/graphql";
 
 const ajv = new Ajv();
 

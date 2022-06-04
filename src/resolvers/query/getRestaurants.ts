@@ -1,5 +1,4 @@
 import { QueryResolvers } from "../../types/generated/graphql";
-
 import { DynamoDBClient, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { TRestaurantDynamo } from "../../types/models/restaurantModels";
 import { Restaurant } from "../../types/generated/graphql";
