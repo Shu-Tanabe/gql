@@ -1,5 +1,5 @@
 import { MutationResolvers, Status } from "../../types/generated/graphql";
-import { deleteRestaurantRepos } from "../../repositories/deleteRestaurant";
+import { testRestaurantData } from "../testData";
 
 export const deleteRestaurant: MutationResolvers["deleteRestaurant"] = async (
   parent,
@@ -11,7 +11,11 @@ export const deleteRestaurant: MutationResolvers["deleteRestaurant"] = async (
     throw new Error();
   }
   try {
-    await deleteRestaurantRepos(args.restaurantId);
+    const newTestRestaurantData = await testRestaurantData.filter(
+      (data) => data.restaurantId != args.restaurantId
+    );
+
+    await console.log(newTestRestaurantData);
 
     const responseStatus: Status = "OK";
 

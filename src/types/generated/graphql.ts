@@ -16,23 +16,53 @@ export type Scalars = {
 };
 
 export type AddRestaurantInput = {
-  description?: InputMaybe<Scalars['String']>;
-  introducer: Scalars['String'];
+  description: Scalars['String'];
+  introducerId: Scalars['String'];
   occasion: Occusion;
   restaurantName: Scalars['String'];
   score: Scalars['Float'];
 };
 
+export type EnteredRestaurant = {
+  __typename?: 'EnteredRestaurant';
+  description: Scalars['String'];
+  introducerId: Scalars['String'];
+  occasion: Occusion;
+  restaurantId: Scalars['ID'];
+  restaurantName: Scalars['String'];
+  score: Scalars['Float'];
+  updateDate: Scalars['Date'];
+};
+
+export type GqlRestaurant = {
+  __typename?: 'GqlRestaurant';
+  description: Scalars['String'];
+  introducer: GqlUser;
+  occasion: Occusion;
+  restaurantId: Scalars['ID'];
+  restaurantName: Scalars['String'];
+  score: Scalars['Float'];
+  updateDate: Scalars['Date'];
+};
+
+export type GqlUser = {
+  __typename?: 'GqlUser';
+  mail: Scalars['String'];
+  password: Scalars['String'];
+  userId: Scalars['ID'];
+  userName: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  addRestaurant: Restaurant;
+  addRestaurant: EnteredRestaurant;
   deleteRestaurant: Status;
-  updateRestaurant: Restaurant;
+  updateRestaurant: EnteredRestaurant;
 };
 
 
 export type MutationAddRestaurantArgs = {
-  restaurantInput?: InputMaybe<AddRestaurantInput>;
+  restaurantInput: AddRestaurantInput;
 };
 
 
@@ -42,7 +72,7 @@ export type MutationDeleteRestaurantArgs = {
 
 
 export type MutationUpdateRestaurantArgs = {
-  restaurantId: Scalars['String'];
+  restaurantId: Scalars['ID'];
   restaurantUpdate?: InputMaybe<UpdateRestaurantInput>;
 };
 
@@ -54,8 +84,8 @@ export type Occusion =
 
 export type Query = {
   __typename?: 'Query';
-  getRestaurantById?: Maybe<Restaurant>;
-  getRestaurants?: Maybe<Array<Maybe<Restaurant>>>;
+  getRestaurantById: GqlRestaurant;
+  getRestaurants?: Maybe<Array<GqlRestaurant>>;
 };
 
 
@@ -67,7 +97,7 @@ export type Restaurant = {
   __typename?: 'Restaurant';
   description?: Maybe<Scalars['String']>;
   introducer?: Maybe<Scalars['String']>;
-  occasion: Scalars['String'];
+  occasion: Occusion;
   restaurantId: Scalars['ID'];
   restaurantName: Scalars['String'];
   score?: Maybe<Scalars['Float']>;
@@ -89,7 +119,7 @@ export type Status =
 
 export type UpdateRestaurantInput = {
   description: Scalars['String'];
-  occasion?: InputMaybe<Occusion>;
+  occasion: Occusion;
   restaurantName: Scalars['String'];
   score: Scalars['Float'];
 };
@@ -167,7 +197,10 @@ export type ResolversTypes = ResolversObject<{
   AddRestaurantInput: AddRestaurantInput;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
+  EnteredRestaurant: ResolverTypeWrapper<EnteredRestaurant>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  GqlRestaurant: ResolverTypeWrapper<GqlRestaurant>;
+  GqlUser: ResolverTypeWrapper<GqlUser>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
   Occusion: Occusion;
@@ -183,7 +216,10 @@ export type ResolversParentTypes = ResolversObject<{
   AddRestaurantInput: AddRestaurantInput;
   Boolean: Scalars['Boolean'];
   Date: Scalars['Date'];
+  EnteredRestaurant: EnteredRestaurant;
   Float: Scalars['Float'];
+  GqlRestaurant: GqlRestaurant;
+  GqlUser: GqlUser;
   ID: Scalars['ID'];
   Mutation: {};
   Query: {};
@@ -196,21 +232,51 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Date';
 }
 
+export type EnteredRestaurantResolvers<ContextType = ../context, ParentType extends ResolversParentTypes['EnteredRestaurant'] = ResolversParentTypes['EnteredRestaurant']> = ResolversObject<{
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  introducerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  occasion?: Resolver<ResolversTypes['Occusion'], ParentType, ContextType>;
+  restaurantId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  restaurantName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  updateDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type GqlRestaurantResolvers<ContextType = ../context, ParentType extends ResolversParentTypes['GqlRestaurant'] = ResolversParentTypes['GqlRestaurant']> = ResolversObject<{
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  introducer?: Resolver<ResolversTypes['GqlUser'], ParentType, ContextType>;
+  occasion?: Resolver<ResolversTypes['Occusion'], ParentType, ContextType>;
+  restaurantId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  restaurantName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  score?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  updateDate?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type GqlUserResolvers<ContextType = ../context, ParentType extends ResolversParentTypes['GqlUser'] = ResolversParentTypes['GqlUser']> = ResolversObject<{
+  mail?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  userName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type MutationResolvers<ContextType = ../context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  addRestaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, Partial<MutationAddRestaurantArgs>>;
+  addRestaurant?: Resolver<ResolversTypes['EnteredRestaurant'], ParentType, ContextType, RequireFields<MutationAddRestaurantArgs, 'restaurantInput'>>;
   deleteRestaurant?: Resolver<ResolversTypes['Status'], ParentType, ContextType, RequireFields<MutationDeleteRestaurantArgs, 'restaurantId'>>;
-  updateRestaurant?: Resolver<ResolversTypes['Restaurant'], ParentType, ContextType, RequireFields<MutationUpdateRestaurantArgs, 'restaurantId'>>;
+  updateRestaurant?: Resolver<ResolversTypes['EnteredRestaurant'], ParentType, ContextType, RequireFields<MutationUpdateRestaurantArgs, 'restaurantId'>>;
 }>;
 
 export type QueryResolvers<ContextType = ../context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  getRestaurantById?: Resolver<Maybe<ResolversTypes['Restaurant']>, ParentType, ContextType, RequireFields<QueryGetRestaurantByIdArgs, 'restaurantId'>>;
-  getRestaurants?: Resolver<Maybe<Array<Maybe<ResolversTypes['Restaurant']>>>, ParentType, ContextType>;
+  getRestaurantById?: Resolver<ResolversTypes['GqlRestaurant'], ParentType, ContextType, RequireFields<QueryGetRestaurantByIdArgs, 'restaurantId'>>;
+  getRestaurants?: Resolver<Maybe<Array<ResolversTypes['GqlRestaurant']>>, ParentType, ContextType>;
 }>;
 
 export type RestaurantResolvers<ContextType = ../context, ParentType extends ResolversParentTypes['Restaurant'] = ResolversParentTypes['Restaurant']> = ResolversObject<{
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   introducer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  occasion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  occasion?: Resolver<ResolversTypes['Occusion'], ParentType, ContextType>;
   restaurantId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   restaurantName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   score?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -220,6 +286,9 @@ export type RestaurantResolvers<ContextType = ../context, ParentType extends Res
 
 export type Resolvers<ContextType = ../context> = ResolversObject<{
   Date?: GraphQLScalarType;
+  EnteredRestaurant?: EnteredRestaurantResolvers<ContextType>;
+  GqlRestaurant?: GqlRestaurantResolvers<ContextType>;
+  GqlUser?: GqlUserResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Restaurant?: RestaurantResolvers<ContextType>;

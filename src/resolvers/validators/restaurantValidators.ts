@@ -17,10 +17,7 @@ const addRestaurantSchema: JSONSchemaType<AddRestaurantInput> = {
       type: "number",
       maximum: 20,
     },
-    introducer: {
-      type: "string",
-      maximum: 20,
-    },
+    introducer: {},
     occasion: {
       type: "string",
       maximum: 20,

@@ -5,20 +5,47 @@ type Restaurant {
   introducer: String
   description: String
   updatedDate: Date
-  occasion: String!
+  occasion: Occusion!
+}
+
+type GqlUser {
+  userId: ID!
+  userName: String!
+  password: String!
+  mail: String!
+}
+
+type GqlRestaurant {
+  restaurantId: ID!
+  restaurantName: String!
+  occasion: Occusion!
+  score: Float!
+  updateDate: Date!
+  description: String!
+  introducer: GqlUser!
+}
+
+type EnteredRestaurant {
+  restaurantId: ID!
+  restaurantName: String!
+  occasion: Occusion!
+  score: Float!
+  updateDate: Date!
+  description: String!
+  introducerId: String!
 }
 
 type Query {
-  getRestaurants: [Restaurant]
-  getRestaurantById(restaurantId: String!): Restaurant
+  getRestaurants: [GqlRestaurant!]
+  getRestaurantById(restaurantId: String!): GqlRestaurant!
 }
 
 type Mutation {
-  addRestaurant(restaurantInput: AddRestaurantInput): Restaurant!
+  addRestaurant(restaurantInput: AddRestaurantInput!): EnteredRestaurant!
   updateRestaurant(
-    restaurantId: String!
-    restaurantUpdate: UpdateRestaurantInput
-  ): Restaurant!
+    restaurantId: ID!
+    restaurantUpdate: UpdateRestaurantInput!
+  ): EnteredRestaurant!
   deleteRestaurant(restaurantId: String!): Status!
 }
 
@@ -46,15 +73,16 @@ enum Occusion {
 input AddRestaurantInput {
   restaurantName: String!
   score: Float!
-  introducer: String!
-  description: String
+  introducerId: String!
+  description: String!
   occasion: Occusion!
 }
+
 input UpdateRestaurantInput {
   restaurantName: String!
   score: Float!
   description: String!
-  occasion: Occusion
+  occasion: Occusion!
 }
 
 scalar Date

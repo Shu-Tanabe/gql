@@ -1,14 +1,10 @@
 import {
   MutationResolvers,
   AddRestaurantInput,
+  EnteredRestaurant,
 } from "../../types/generated/graphql";
 import { v4 as uuidv4 } from "uuid";
-import {
-  TRestaurant,
-  TRestaurantDynamo,
-} from "../../types/models/restaurantModels";
-import { putRestaurantRepos } from "../../repositories/putRestaurant";
-import { validateRestaurant } from "../validators/restaurantValidators";
+import { testRestaurantData } from "../testData";
 
 const isNullOrUndefinedContained = (
   addedRestaurantData?: Partial<AddRestaurantInput> | null
@@ -25,14 +21,14 @@ const isNullOrUndefinedContained = (
   if (addedRestaurantData.occasion === undefined) {
     throw new Error();
   }
-  if (addedRestaurantData.introducer === undefined) {
+  if (addedRestaurantData.introducerId === undefined) {
     throw new Error();
   }
   const description: string = addedRestaurantData.description ?? "";
   const restaurantData: Required<AddRestaurantInput> = {
     restaurantName: addedRestaurantData.restaurantName,
     score: addedRestaurantData.score,
-    introducer: addedRestaurantData.introducer,
+    introducerId: addedRestaurantData.introducerId,
     occasion: addedRestaurantData.occasion,
     description: description,
   };
@@ -45,37 +41,23 @@ export const addRestaurant: Required<
   try {
     const restaurantData: Required<AddRestaurantInput> =
       isNullOrUndefinedContained(args.restaurantInput);
-    const valid = validateRestaurant(args.restaurantInput);
-    if (!valid) {
-      console.log(valid);
-      throw new Error();
-    }
-    let restaurantId = uuidv4();
+    const restaurantId = uuidv4();
     const addedDatetime = new Date();
 
-    const covertedRestaurant: TRestaurantDynamo = {
-      RestaurantId: { S: restaurantId },
-      RestaurantName: { S: restaurantData.restaurantName },
-      Score: { N: restaurantData.score.toString() },
-      Introducer: { S: restaurantData.introducer },
-      Description: { S: restaurantData.description ?? "" },
-      UpdatedDate: { S: addedDatetime.toString() },
-      Occasion: { S: restaurantData.occasion },
-    };
-
-    const restaurant = await putRestaurantRepos(covertedRestaurant);
-
-    const returnRestaurant: TRestaurant = {
+    const newRestaurant: EnteredRestaurant = {
       restaurantId: restaurantId,
       restaurantName: restaurantData.restaurantName,
       score: restaurantData.score,
       description: restaurantData.description ?? "",
-      introducer: restaurantData.introducer,
+      introducerId: restaurantData.introducerId,
       occasion: restaurantData.occasion,
-      updatedDate: addedDatetime,
+      updateDate: addedDatetime,
     };
 
-    return returnRestaurant;
+    await testRestaurantData.push(newRestaurant);
+    await console.log(testRestaurantData);
+
+    return newRestaurant;
   } catch (err) {
     throw new Error();
   }

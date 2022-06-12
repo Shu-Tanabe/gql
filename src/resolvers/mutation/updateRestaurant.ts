@@ -1,7 +1,6 @@
 import { MutationResolvers } from "../../types/generated/graphql";
-
-import { TUpdatableRestaurant } from "../../types/models/restaurantModels";
-import { updateRestaurantInfo } from "../../repositories/updateRestaurant";
+import { EnteredRestaurant } from "../../types/generated/graphql";
+import { testRestaurantData } from "../testData";
 
 export const updateRestaurant: MutationResolvers["updateRestaurant"] = async (
   parent,
@@ -10,21 +9,40 @@ export const updateRestaurant: MutationResolvers["updateRestaurant"] = async (
   info
 ) => {
   try {
-    const data: any = await updateRestaurantInfo(
-      args.restaurantId,
-      args.restaurantUpdate
+    const willUpdatedRestaurant: EnteredRestaurant | undefined =
+      testRestaurantData.find(
+        (data) => data.restaurantId === args.restaurantId
+      );
+
+    if (willUpdatedRestaurant === undefined) {
+      throw new Error();
+    }
+
+    const newTestTestaurantData = await testRestaurantData.map((data) =>
+      data.restaurantId === args.restaurantId
+        ? {
+            ...data,
+            restaurantName: args.restaurantUpdate.restaurantName,
+            score: args.restaurantUpdate.score,
+            description: args.restaurantUpdate.description,
+            occasion: args.restaurantUpdate.occasion,
+          }
+        : data
     );
 
-    const convertedRestaurant: TUpdatableRestaurant & { restaurantId: string } =
-      {
-        restaurantId: args.restaurantId,
-        restaurantName: args.restaurantUpdate.restaurantName,
-        score: args.restaurantUpdate.score,
-        description: args.restaurantUpdate.description,
-      };
+    const updatedRestaurant: EnteredRestaurant = await {
+      ...willUpdatedRestaurant,
+      restaurantName: args.restaurantUpdate.restaurantName,
+      score: args.restaurantUpdate.score,
+      description: args.restaurantUpdate.description,
+      occasion: args.restaurantUpdate.occasion,
+    };
 
-    return convertedRestaurant;
+    await console.log(newTestTestaurantData);
+
+    return updatedRestaurant;
   } catch (err) {
+    console.log(err);
     throw new Error();
   }
 };
