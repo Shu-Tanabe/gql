@@ -1,3 +1,25 @@
+type Paper {
+  paperId: ID!
+  status: PaperStatus
+  paperName: String!
+  comment: String!
+  history: String!
+}
+
+enum PaperStatus {
+  ATTENTION
+  READ
+  QUOTED
+  QUOTE
+  PUBLISH
+}
+
+type User {
+  userId: ID!
+  userName: String!
+  paper: Paper
+}
+
 type Restaurant {
   restaurantId: ID!
   restaurantName: String!
@@ -38,6 +60,19 @@ type EnteredRestaurant {
 type Query {
   getRestaurants: [GqlRestaurant!]
   getRestaurantById(restaurantId: String!): GqlRestaurant!
+  queryPapers: [Paper]!
+  queryPaperById(paperId: ID!): Paper!
+  getUser: User!
+}
+
+type AddPaperResponse {
+  isSuccess: Boolean!
+  paper: Paper!
+}
+
+type RemovePaperResponse {
+  isSuccess: Boolean!
+  message: String
 }
 
 type Mutation {
@@ -47,6 +82,9 @@ type Mutation {
     restaurantUpdate: UpdateRestaurantInput!
   ): EnteredRestaurant!
   deleteRestaurant(restaurantId: String!): Status!
+  addPaper(paperId: ID!): AddPaperResponse!
+  removePaper(paperId: ID!): RemovePaperResponse!
+  login(userId: String!): String!
 }
 
 enum Status {
