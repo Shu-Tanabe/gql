@@ -31,12 +31,17 @@
     "@graphql-tools/schema": "^8.3.9",
     "@types/uuid": "^8.3.4",
     "ajv": "^8.11.0",
+    "apollo-datasource": "^3.1.0",
     "apollo-datasource-rest": "^3.6.1",
     "apollo-server": "^3.6.7",
-    "aws-sdk": "^2.1131.0",
+    "aws-sdk": "^2.1162.0",
     "fastify": "^4.0.1",
     "graphql": "^16.3.0",
+    "isemail": "^3.2.0",
+    "mime": "^3.0.0",
     "moment": "^2.29.3",
+    "sequelize": "^6.21.1",
+    "sqlite3": "^5.0.8",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
