@@ -1,1 +1,0 @@
-export { addCustomer } from "./addCustomer";

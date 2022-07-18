@@ -1,19 +1,126 @@
-type Customer {
-  customerId: String
-  customerName: String
+type Paper {
+  paperId: ID!
+  status: PaperStatus
+  paperName: String!
+  comment: String!
+  history: String!
+}
+
+enum PaperStatus {
+  ATTENTION
+  READ
+  QUOTED
+  QUOTE
+  PUBLISH
+}
+
+type User {
+  userId: ID!
+  userName: String!
+  paper: Paper
+}
+
+type Restaurant {
+  restaurantId: ID!
+  restaurantName: String!
+  score: Float
+  introducer: String
+  description: String
+  updatedDate: Date
+  occasion: Occusion!
+}
+
+type GqlUser {
+  userId: ID!
+  userName: String!
+  password: String!
+  mail: String!
+}
+
+type GqlRestaurant {
+  restaurantId: ID!
+  restaurantName: String!
+  occasion: Occusion!
+  score: Float!
+  updateDate: Date!
+  description: String!
+  introducer: GqlUser!
+}
+
+type EnteredRestaurant {
+  restaurantId: ID!
+  restaurantName: String!
+  occasion: Occusion!
+  score: Float!
+  updateDate: Date!
+  description: String!
+  introducerId: String!
 }
 
 type Query {
-  getCustomers: [Customer]!
-  getCustomerById(customerId: String!): Customer
+  getRestaurants: [GqlRestaurant!]
+  getRestaurantById(restaurantId: String!): GqlRestaurant!
+  queryPapers: [Paper]!
+  queryPaperById(paperId: ID!): Paper!
+  getUser: User!
+}
+
+type AddPaperResponse {
+  isSuccess: Boolean!
+  paper: Paper!
+}
+
+type RemovePaperResponse {
+  isSuccess: Boolean!
+  message: String
 }
 
 type Mutation {
-  addCustomer(customerId: String, input: CustomerInput): Customer
-  updateCustomer(customerId: String, input: CustomerInput): Customer
-  deleteCustomer(customerId: String): Customer
+  addRestaurant(restaurantInput: AddRestaurantInput!): EnteredRestaurant!
+  updateRestaurant(
+    restaurantId: ID!
+    restaurantUpdate: UpdateRestaurantInput!
+  ): EnteredRestaurant!
+  deleteRestaurant(restaurantId: String!): Status!
+  addPaper(paperId: ID!): AddPaperResponse!
+  removePaper(paperId: ID!): RemovePaperResponse!
+  login(userId: String!): String!
 }
 
-input CustomerInput {
-  customerName: String!
+enum Status {
+  OK
+  CREATED
+  NO_CONTENT
+  BAD_REQUEST
+  UNAUTHORIZED
+  FORBIDDEN
+  NOT_FOUND
+  INTERNAL_SERVER_ERROR
+  BAD_GATEWAY
+  SURVICE_UNAVAILABLE
+  GATEWAY_TIMEOUT
 }
+
+enum Occusion {
+  Dating
+  Alone
+  Friends
+  Colleague
+}
+
+input AddRestaurantInput {
+  restaurantName: String!
+  score: Float!
+  introducerId: String!
+  description: String!
+  occasion: Occusion!
+}
+
+input UpdateRestaurantInput {
+  restaurantName: String!
+  score: Float!
+  description: String!
+  occasion: Occusion!
+}
+
+scalar Date

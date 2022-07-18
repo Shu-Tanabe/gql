@@ -1,29 +1,29 @@
-import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
-import { loadSchemaSync } from "@graphql-tools/load";
-import { addResolversToSchema } from "@graphql-tools/schema";
 import { ApolloServer } from "apollo-server";
-import { join } from "path";
-import resolvers from "./resolvers";
+import { typeDefs } from "./schema";
+import { createStore } from "./utils";
+import { LaunchAPI } from "./datasources/launch";
+import { UserAPI } from "./datasources/user";
+import { resolvers } from "./resolvers";
+import isEmail from "isemail";
 
-const schema = loadSchemaSync(join(__dirname, "../schema.graphql"), {
-  loaders: [new GraphQLFileLoader()],
-});
+const store = createStore();
 
-const customers = [
-  {
-    customerId: "vujnswbirbhvjwsd",
-    customerName: "Kate Chopin",
-  },
-  {
-    customerId: "ndskbjrfjwhkds",
-    customerName: "Paul Auster",
-  },
-];
-
-const schemaWithResolvers = addResolversToSchema({ schema, resolvers });
 const server = new ApolloServer({
-  schema: schemaWithResolvers,
-  cors: true,
+  context: async ({ req }) => {
+    const auth = (req.headers && req.headers.authorization) || "";
+    const email = Buffer.from(auth, "base64").toString("ascii");
+    if (!isEmail.validate(email)) return { user: null };
+    const users = await store.users.findOrCreate({ where: { email } });
+    const user = users && users[0] ? users[0] : null;
+
+    return { user };
+  },
+  typeDefs,
+  resolvers,
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store }),
+  }),
 });
 
 server.listen().then(({ url }) => {
