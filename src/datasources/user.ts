@@ -1,9 +1,7 @@
 import S3 from "aws-sdk/clients/s3";
 import isEmail from "isemail";
-// import mime from "mime";
 const { mime } = require("mime");
 import { v4 as uuidv4 } from "uuid";
-// import { DataSource } from "apollo-datasource";
 const { DataSource } = require("apollo-datasource");
 
 export class UserAPI extends DataSource {

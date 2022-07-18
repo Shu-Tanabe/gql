@@ -24,16 +24,7 @@ export const typeDefs = gql`
   }
   type Query {
     launch(id: ID!): Launch
-    launches(
-      """
-
-      """
-      pageSize: Int
-      """
-
-      """
-      after: String
-    ): LaunchConnection!
+    launches(pageSize: Int, after: String): LaunchConnection!
     me: User
   }
   type User {
